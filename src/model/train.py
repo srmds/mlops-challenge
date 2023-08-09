@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 
 
 def main(args):
-    mlflow.autolog() 
+    mlflow.autolog()
     df = get_csvs_df(args.training_data)
     X_train, X_test, y_train, y_test = split_data(df)
     train_model(args.reg_rate, X_train, X_test, y_train, y_test)
@@ -25,17 +25,20 @@ def get_csvs_df(path):
 
 
 def split_data(df):
-    X, y = df[['Pregnancies','PlasmaGlucose','DiastolicBloodPressure','TricepsThickness','SerumInsulin','BMI','DiabetesPedigree','Age']].values, df['Diabetic'].values
-    # mlflow.log_param("X", X)
+    X, y = df[['Pregnancies', 'PlasmaGlucose', 'DiastolicBloodPressure', 'TricepsThickness', 'SerumInsulin', 'BMI', 'DiabetesPedigree', 'Age']].values, df['Diabetic'].values
 
     mlflow.log_param("unique_count", np.unique(y, return_counts=True))
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.30, random_state=0
+    )
     
     return X_train, X_test, y_train, y_test
 
 def train_model(reg_rate, X_train, X_test, y_train, y_test):
-    return LogisticRegression(C=1/reg_rate, solver="liblinear").fit(X_train, y_train)
-    
+    return LogisticRegression(
+        C=1/reg_rate, 
+        solver="liblinear"
+    ).fit(X_train, y_train)
 
 def parse_args():
     parser = argparse.ArgumentParser()
