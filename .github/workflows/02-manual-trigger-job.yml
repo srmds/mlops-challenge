@@ -1,10 +1,8 @@
-name: Manually trigger an Azure Machine Learning job
+name: Trigger an Azure Machine Learning job
 on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, reopened]
   workflow_dispatch:  # enables manual triggering of workflow from actions tab on github
     inputs:
       resource_group:
@@ -16,24 +14,7 @@ on:
         required: true
         default: srmds-dev-ws
 jobs:
-  code-quality-and-pytests:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
-    steps:
-      - name: Check out repo
-        uses: actions/checkout@main
-      - name: Use Python version 3.8
-        uses: actions/setup-python@v3
-        with:
-          python-version: '3.8'
-      - name: Install Flake8
-        run: |
-          python -m pip install flake8
-      - name: Run linting tests
-        run: | 
-          flake8 src/model/
   train:
-    needs: code-quality-and-pytests
     runs-on: ubuntu-latest
     steps:
     - name: Check out repo
@@ -49,3 +30,5 @@ jobs:
     - name: run pipeline
       # run: az ml job create --file src/job.yml --resource-group ${{ github.event.inputs.resource_group }} --workspace-name ${{ github.event.inputs.workspace_name }}
       run: az ml job create --file src/job.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws
+
+      
