@@ -8,9 +8,11 @@ on:
       resource_group:
         description: 'resource group'     
         required: true
+        default: srmds-dev-rg 
       workspace_name:
         description: 'workspace name'
         required: true
+        default: srmds-dev-ws
 jobs:
   train:
     runs-on: ubuntu-latest
