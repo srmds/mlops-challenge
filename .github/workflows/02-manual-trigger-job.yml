@@ -15,7 +15,6 @@ on:
         default: srmds-dev-ws
 jobs:
   train:
-    needs: code-quality-and-pytests
     runs-on: ubuntu-latest
     steps:
     - name: Check out repo

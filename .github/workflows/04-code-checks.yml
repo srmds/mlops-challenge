@@ -1,11 +1,10 @@
 name: Code Checks
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, synchronize, auto_merge_enabled]
 jobs:
   code-quality-and-pytests:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.opened == true
     steps:
       - name: Check out repo
         uses: actions/checkout@main
