@@ -1,8 +1,13 @@
 name: Manually trigger an Azure Machine Learning job
-
 on:
-  workflow_dispatch:
-
+  workflow_dispatch:  # enables manual triggering of workflow from actions tab on github
+    inputs:
+      resource_group:
+        description: 'resource group'     
+        required: true
+      workspace_name:
+        description: 'workspace name'
+        required: true
 jobs:
   train:
     runs-on: ubuntu-latest
@@ -15,5 +20,7 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-
-
+    - name: set current directory
+      run: cd src
+    - name: run pipeline
+      run: az ml job create --file src/job.yml --resource-group ${{ github.event.inputs.resource_group }} --workspace-name ${{ github.event.inputs.workspace_name }}
