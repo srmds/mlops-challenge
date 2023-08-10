@@ -51,7 +51,7 @@ jobs:
       run: cd src
     - name: run pipeline prd
       # run: az ml job create --file src/job.yml --resource-group ${{ github.event.inputs.resource_group }} --workspace-name ${{ github.event.inputs.workspace_name }}
-      run: az ml job create --file src/train-job-prd.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws --stream
+      run: az ml job create --name diabetes-model-prd-${{ github.run_id }} --file src/train-job-prd.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws --stream
   register-model:
     environment:
       name: prd
@@ -67,4 +67,4 @@ jobs:
     - name: register model
       run: |
         uuid=uuidgen
-        az ml model create --name diabetes-model-prd-${echo $uuid} --version 1 --path azureml://jobs/diabetes-model-prd/outputs/diabetes-model-prd-${echo $uuid}/model/model.pkl --resource-group srmds-dev-rg --workspace-name srmds-dev-ws
+        az ml model create --name diabetes-model-prd-${{ github.run_id }} --version 1 --path azureml://jobs/diabetes-model-prd/outputs/diabetes-model-prd-${{ github.run_id }}/model/model.pkl --resource-group srmds-dev-rg --workspace-name srmds-dev-ws
