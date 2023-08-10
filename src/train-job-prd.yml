@@ -15,4 +15,4 @@ environment: azureml:Custom@latest
 compute: srmds-dev-cc
 display_name:  diabetes-model-prd
 experiment_name: diabetes-training-prd
-description: Train job for diabetes PRD
+description: PRD - Train job for diabetes
