@@ -14,4 +14,4 @@ inputs:
 environment: azureml:Custom@latest
 compute: srmds-dev-cc
 experiment_name: diabetes-training-dev
-description: Train job for diabetes DEV
+description: DEV - Train job for diabetes
