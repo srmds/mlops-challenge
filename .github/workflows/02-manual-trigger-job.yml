@@ -35,7 +35,7 @@ jobs:
   train-prd:
     environment:
       name: prd
-    needs: train
+    needs: train-dev
     runs-on: ubuntu-latest
     steps:
     - name: Check out repo
