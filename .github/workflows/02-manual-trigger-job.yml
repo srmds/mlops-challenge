@@ -65,4 +65,4 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: register model
-      run: az ml model create --name diabetes --version 1 --path azureml:diabetes-model-prd:1 --resource-group srmds-dev-rg --workspace-name srmds-dev-ws
+      run: az ml model create --name diabetes --version 1 --path azureml://jobs/diabetes-model-prd/outputs/diabetes-model-prd/model/model.pkl --resource-group srmds-dev-rg --workspace-name srmds-dev-ws
