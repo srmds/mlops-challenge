@@ -10,7 +10,6 @@ from azure.ai.ml import MLClient
 from azure.ai.ml.entities import Model
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.constants import ModelType
-import argparse
 
 MODEL_NAME = "diabetes-model"
 DESCRIPTION = "model for diabetes detection"
@@ -24,14 +23,14 @@ def main(args):
     df = get_csvs_df(args.training_data)
     X_train, X_test, y_train, y_test = split_data(df)
     train_model(args.reg_rate, X_train, X_test, y_train, y_test)
-    
+
     # If model is trained in prd, then we need to register the model,
     # so it can be used to deploy it as an API endpoint
-    if args.env == "prd": 
+    if args.env == "prd":
         register_model(
-            args, 
-            mlflow_run_id, 
-            f"{MODEL_NAME}-{args.env}", 
+            args,
+            mlflow_run_id,
+            f"{MODEL_NAME}-{args.env}",
             DESCRIPTION
         )
 
@@ -73,9 +72,9 @@ def train_model(reg_rate, X_train, X_test, y_train, y_test):
 
 def register_model(args, run_id, model_name, description):
     ml_client = MLClient(
-        DefaultAzureCredential(), 
-        args.subscription_id, 
-        args.resource_group, 
+        DefaultAzureCredential(),
+        args.subscription_id,
+        args.resource_group,
         args.workspace
     )
 
@@ -87,8 +86,8 @@ def register_model(args, run_id, model_name, description):
     )
 
     ml_client.models.create_or_update(run_model)
-    
-    
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
 
@@ -123,7 +122,7 @@ def parse_args():
         dest='env',
         type=str,
     )
-    
+
     args = parser.parse_args()
 
     return args
