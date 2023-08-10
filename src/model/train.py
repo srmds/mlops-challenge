@@ -18,7 +18,7 @@ DESCRIPTION = "model for diabetes detection"
 def main(args):
     mlflow.autolog()
     mlflow_run = mlflow.active_run()
-    mlflow_run_id = mlflow_run.info.run_id
+
 
     df = get_csvs_df(args.training_data)
     X_train, X_test, y_train, y_test = split_data(df)
@@ -26,10 +26,12 @@ def main(args):
 
     # If model is trained in prd, then we need to register the model,
     # so it can be used to deploy it as an API endpoint
+    autolog_run = mlflow.last_active_run()
+
     if args.env == "prd":
         register_model(
             args,
-            mlflow_run_id,
+            autolog_run.info.run_id,
             f"{MODEL_NAME}-{args.env}",
             DESCRIPTION
         )
