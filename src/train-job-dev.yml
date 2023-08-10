@@ -11,7 +11,7 @@ inputs:
   resource_group: srmds-dev-rg
   workspace: srmds-dev-ws
   env: dev
-environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
+environment: azureml:Custom@latest
 compute: srmds-dev-cc
 experiment_name: diabetes-training-dev
 description: Train job for diabetes DEV
