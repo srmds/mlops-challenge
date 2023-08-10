@@ -31,7 +31,8 @@ jobs:
       run: cd src
     - name: run pipeline dev
       # run: az ml job create --file src/job.yml --resource-group ${{ github.event.inputs.resource_group }} --workspace-name ${{ github.event.inputs.workspace_name }}
-      run: az ml job create --file src/train-job-dev.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws
+      # --stream will result in streaming the job logs and results waiting for the job completion before the next job may be started (it must succeed in order to trigger next job otherwise the workflow will exit): https://learn.microsoft.com/en-us/cli/azure/ml/job?view=azure-cli-latest#az-ml-job-stream
+      run: az ml job create --file src/train-job-dev.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws --stream
   train-prd:
     environment:
       name: prd
