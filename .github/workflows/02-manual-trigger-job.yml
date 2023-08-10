@@ -67,4 +67,4 @@ jobs:
     - name: register model
       run: |
         uuid=uuidgen
-        az ml model create --name diabetes-model-prd-${{ github.run_id }} --version 1 --path azureml://jobs/diabetes-model-prd/outputs/diabetes-model-prd-${{ github.run_id }}/model/model.pkl --resource-group srmds-dev-rg --workspace-name srmds-dev-ws
+        az ml model create --name diabetes-model-prd-${{ github.run_id }} --version 1 --path azureml://jobs/diabetes-model-prd/outputs/model/model.pkl --resource-group srmds-dev-rg --workspace-name srmds-dev-ws
