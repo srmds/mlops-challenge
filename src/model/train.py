@@ -6,13 +6,34 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 import numpy as np
 from sklearn.model_selection import train_test_split
+from azure.ai.ml import MLClient
+from azure.ai.ml.entities import Model
+from azure.identity import DefaultAzureCredential
+from azure.ai.ml.constants import ModelType
+import argparse
+
+MODEL_NAME = "diabetes-model"
+DESCRIPTION = "model for diabetes detection"
 
 
 def main(args):
     mlflow.autolog()
+    mlflow_run = mlflow.active_run()
+    mlflow_run_id = mlflow_run.info.run_id
+
     df = get_csvs_df(args.training_data)
     X_train, X_test, y_train, y_test = split_data(df)
     train_model(args.reg_rate, X_train, X_test, y_train, y_test)
+    
+    # If model is trained in prd, then we need to register the model,
+    # so it can be used to deploy it as an API endpoint
+    if args.env == "prd": 
+        register_model(
+            args, 
+            mlflow_run_id, 
+            f"{MODEL_NAME}-{args.env}", 
+            DESCRIPTION
+        )
 
 
 def get_csvs_df(path):
@@ -50,6 +71,24 @@ def train_model(reg_rate, X_train, X_test, y_train, y_test):
     ).fit(X_train, y_train)
 
 
+def register_model(args, run_id, model_name, description):
+    ml_client = MLClient(
+        DefaultAzureCredential(), 
+        args.subscription_id, 
+        args.resource_group, 
+        args.workspace
+    )
+
+    run_model = Model(
+        path=f"runs:/{run_id}/model/",
+        name=model_name,
+        description=description,
+        type=ModelType.MLFLOW
+    )
+
+    ml_client.models.create_or_update(run_model)
+    
+    
 def parse_args():
     parser = argparse.ArgumentParser()
 
@@ -64,7 +103,27 @@ def parse_args():
         type=float,
         default=0.01
     )
-
+    parser.add_argument(
+        "--subscription_id",
+        dest='subscription_id',
+        type=str
+    )
+    parser.add_argument(
+        "--resource_group",
+        dest='resource_group',
+        type=str,
+    )
+    parser.add_argument(
+        "--workspace",
+        dest='workspace',
+        type=str,
+    )
+    parser.add_argument(
+        "--env",
+        dest='env',
+        type=str,
+    )
+    
     args = parser.parse_args()
 
     return args
