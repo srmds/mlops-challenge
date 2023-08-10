@@ -9,5 +9,7 @@ inputs:
   reg_rate: 0.01
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 compute: srmds-dev-cc
-experiment_name: Diabetes-training
+name: diabetes-model-prd
+display_name:  diabetes-model-prd
+experiment_name: diabetes-training-prd
 description: Train job for diabetes PRD
