@@ -1,12 +1,16 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: model
 command: >-
-  python train.py --training_data ${{inputs.training_data}} --reg_rate ${{inputs.reg_rate}}
+  python train.py --training_data ${{inputs.training_data}} --reg_rate ${{inputs.reg_rate}} --subscription_id ${{inputs.subscription_id}} --resource_group ${{inputs.resource_group}} --workspace ${{inputs.workspace}} --env ${{inputs.env}}
 inputs:
   training_data: 
     type: uri_folder 
     path: azureml:diabetes-dev-folder:1 
   reg_rate: 0.01
+  subscription_id: 5660f606-b840-4a8d-9e4f-c058b09a34a2
+  resource_group: srmds-dev-rg
+  workspace: srmds-dev-ws
+  env: dev
 environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest
 compute: srmds-dev-cc
 experiment_name: diabetes-training-dev

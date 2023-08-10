@@ -3,3 +3,5 @@ mlflow==1.27.0
 pandas==1.4.3
 sklearn==0.0
 scikit-learn==1.1.1
+azure-ai-ml
+azure-identity
