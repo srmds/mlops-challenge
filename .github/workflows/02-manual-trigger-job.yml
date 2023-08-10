@@ -65,4 +65,6 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: register model
-      run: az ml model create --name diabetes --version 1 --path azureml://jobs/diabetes-model-prd/outputs/diabetes-model-prd/model/model.pkl --resource-group srmds-dev-rg --workspace-name srmds-dev-ws
+      run: |
+        uuid=uuidgen
+        az ml model create --name diabetes-model-prd-${echo $uuid} --version 1 --path azureml://jobs/diabetes-model-prd/outputs/diabetes-model-prd-${echo $uuid}/model/model.pkl --resource-group srmds-dev-rg --workspace-name srmds-dev-ws
