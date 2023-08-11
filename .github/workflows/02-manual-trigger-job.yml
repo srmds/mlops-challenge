@@ -35,6 +35,7 @@ jobs:
       run: |
         run_id=${{ github.run_id }}
         sed -i 's/%RUN_ID%/$run_id/g' src/train-job-dev.yml
+        cat src/train-job-dev.yml
         az ml job create --file src/train-job-dev.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws --stream
   train-prd:
     environment:
@@ -57,4 +58,5 @@ jobs:
       run: |
         run_id=${{ github.run_id }}
         sed -i 's/%RUN_ID%/$run_id/g' src/train-job-prd.yml
+        cat src/train-job-prd.yml
         az ml job create --name diabetes-model-prd-${{ github.run_id }} --file src/train-job-prd.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws --stream
