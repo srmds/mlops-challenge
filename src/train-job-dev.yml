@@ -1,7 +1,7 @@
 $schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
 code: model
 command: >-
-  python train.py --training_data ${{inputs.training_data}} --reg_rate ${{inputs.reg_rate}} --subscription_id ${{inputs.subscription_id}} --resource_group ${{inputs.resource_group}} --workspace ${{inputs.workspace}} --env ${{inputs.env}}
+  python train.py --training_data ${{inputs.training_data}} --reg_rate ${{inputs.reg_rate}} --subscription_id ${{inputs.subscription_id}} --resource_group ${{inputs.resource_group}} --workspace ${{inputs.workspace}} --env ${{inputs.env}} --run_id ${{inputs.run_id}}
 inputs:
   training_data: 
     type: uri_folder 
@@ -11,7 +11,9 @@ inputs:
   resource_group: srmds-dev-rg
   workspace: srmds-dev-ws
   env: dev
+  run_id: ${{ github.run_id }}
 environment: azureml:Custom@latest
 compute: srmds-dev-cc
+display_name:  diabetes-model-dev
 experiment_name: diabetes-training-dev
 description: DEV - Train job for diabetes
