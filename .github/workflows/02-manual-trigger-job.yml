@@ -32,7 +32,10 @@ jobs:
     - name: run pipeline dev
       # run: az ml job create --file src/job.yml --resource-group ${{ github.event.inputs.resource_group }} --workspace-name ${{ github.event.inputs.workspace_name }}
       # --stream will result in streaming the job logs and results waiting for the job completion before the next job may be started (it must succeed in order to trigger next job otherwise the workflow will exit): https://learn.microsoft.com/en-us/cli/azure/ml/job?view=azure-cli-latest#az-ml-job-stream
-      run: az ml job create --file src/train-job-dev.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws --stream
+      run: |
+        run_id=${{ github.run_id }}
+        sed -i 's/%RUN_ID%/$run_id/g' src/train-job-dev.yml
+        az ml job create --file src/train-job-dev.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws --stream
   train-prd:
     environment:
       name: prd
@@ -51,4 +54,7 @@ jobs:
       run: cd src
     - name: run pipeline prd
       # run: az ml job create --file src/job.yml --resource-group ${{ github.event.inputs.resource_group }} --workspace-name ${{ github.event.inputs.workspace_name }}
-      run: az ml job create --name diabetes-model-prd-${{ github.run_id }} --file src/train-job-prd.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws --stream
+      run: |
+        run_id=${{ github.run_id }}
+        sed -i 's/%RUN_ID%/$run_id/g' src/train-job-prd.yml
+        az ml job create --name diabetes-model-prd-${{ github.run_id }} --file src/train-job-prd.yml --resource-group srmds-dev-rg --workspace-name srmds-dev-ws --stream

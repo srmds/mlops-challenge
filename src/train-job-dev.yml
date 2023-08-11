@@ -11,7 +11,7 @@ inputs:
   resource_group: srmds-dev-rg
   workspace: srmds-dev-ws
   env: dev
-  run_id: ${{ github.run_id }}
+  run_id: %RUN_ID%
 environment: azureml:Custom@latest
 compute: srmds-dev-cc
 display_name:  diabetes-model-dev
