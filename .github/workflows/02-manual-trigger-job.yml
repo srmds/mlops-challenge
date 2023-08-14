@@ -50,7 +50,7 @@ jobs:
     - name: Azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
+        creds: ${{secrets.AZURE_CREDENTIALS_PRD}}
     - name: set current directory
       run: cd src
     - name: run pipeline prd
