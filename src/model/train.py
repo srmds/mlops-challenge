@@ -35,7 +35,6 @@ def main(args):
 
     logger.info(autolog_run)
 
-    logger.info*()
     if args.env == "prd":
         register_model(
             args,
@@ -130,11 +129,6 @@ def parse_args():
     parser.add_argument(
         "--env",
         dest='env',
-        type=str,
-    )
-    parser.add_argument(
-        "--run_id",
-        dest='run_id',
         type=str,
     )
 
