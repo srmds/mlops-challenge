@@ -132,6 +132,11 @@ def parse_args():
         dest='env',
         type=str,
     )
+    parser.add_argument(
+        "--run_id",
+        dest='run_id',
+        type=str,
+    )
 
     args = parser.parse_args()
 
