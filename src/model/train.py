@@ -33,12 +33,13 @@ def main(args):
     autolog_run = mlflow.last_active_run()
     mlflow_run_id = args.run_id  # autolog_run.info.run
 
-    logger.info(autolog_run)
+    logger.info(f"autolog id: {autolog_run}")
+    logger.info(f"pipeline run id: {args.run_id}")
 
     if args.env == "prd":
         register_model(
             args,
-            mlflow_run_id,
+            args.run_id,
             f"{MODEL_NAME}-{args.env}",
             DESCRIPTION
         )
@@ -131,6 +132,12 @@ def parse_args():
         dest='env',
         type=str,
     )
+    parser.add_argument(
+        "--run_id",
+        dest='run_id',
+        type=str,
+    )
+
 
     args = parser.parse_args()
 
