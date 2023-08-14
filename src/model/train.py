@@ -17,6 +17,8 @@ DESCRIPTION = "model for diabetes detection"
 
 def main(args):
     mlflow.autolog()
+    mlflow_run = mlflow.active_run()
+
 
     df = get_csvs_df(args.training_data)
     X_train, X_test, y_train, y_test = split_data(df)
@@ -24,14 +26,14 @@ def main(args):
 
     # If model is trained in prd, then we need to register the model,
     # so it can be used to deploy it as an API endpoint
+    autolog_run = mlflow.last_active_run()
+    mlflow_run_id = autolog_run.info.run
     if args.env == "prd":
         register_model(
-            subscription_id=args.subscription_id,
-            resource_group=args.resource_group,
-            workspace=args.workspace,
-            run_id=args.run_id,
-            model_name=f"{MODEL_NAME}-{args.env}",
-            description=DESCRIPTION
+            args,
+            mlflow_run_id,
+            f"{MODEL_NAME}-{args.env}",
+            DESCRIPTION
         )
 
 
@@ -70,19 +72,12 @@ def train_model(reg_rate, X_train, X_test, y_train, y_test):
     ).fit(X_train, y_train)
 
 
-def register_model(
-    subscription_id: str,
-    resource_group: str,
-    workspace: str,
-    run_id: str,
-    model_name: str,
-    description: str
-):
+def register_model(args, run_id, model_name, description):
     ml_client = MLClient(
         DefaultAzureCredential(),
-        subscription_id,
-        resource_group,
-        workspace
+        args.subscription_id,
+        args.resource_group,
+        args.workspace
     )
 
     run_model = Model(
@@ -127,11 +122,6 @@ def parse_args():
     parser.add_argument(
         "--env",
         dest='env',
-        type=str,
-    )
-    parser.add_argument(
-        "--run_id",
-        dest='run_id',
         type=str,
     )
 
