@@ -31,10 +31,10 @@ def main(args):
     # If model is trained in prd, then we need to register the model,
     # so it can be used to deploy it as an API endpoint
     autolog_run = mlflow.last_active_run()
-    mlflow_run_id = args.run_id # autolog_run.info.run
-    
+    mlflow_run_id = args.run_id  # autolog_run.info.run
+
     logger.info(autolog_run)
-    
+
     logger.info*()
     if args.env == "prd":
         register_model(
