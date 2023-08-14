@@ -138,7 +138,6 @@ def parse_args():
         type=str,
     )
 
-
     args = parser.parse_args()
 
     return args
